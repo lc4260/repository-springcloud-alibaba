@@ -246,7 +246,6 @@
 		<module>ruoyi-modules</module>
 		<module>ruoyi-api</module>
 		<module>ruoyi-common</module>
-        <module>ruoyi-modules/ruoyi-dictionary</module>
     </modules>
     <packaging>pom</packaging>
 
