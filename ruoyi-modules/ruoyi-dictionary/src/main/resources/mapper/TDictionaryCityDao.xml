@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.dictionary.mapper.TDictionaryCityDao">
+
+    <resultMap type="com.ruoyi.dictionary.entity.TDictionaryCity" id="TDictionaryCityMap">
+        <result property="pkCityId" column="pk_city_id" jdbcType="VARCHAR"/>
+        <result property="cityName" column="city_name" jdbcType="VARCHAR"/>
+        <result property="turnOn" column="turn_on" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="fkProvinceId" column="fk_province_id" jdbcType="VARCHAR"/>
+        <result property="version" column="version" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TDictionaryCityMap">
+        select
+          pk_city_id, city_name, turn_on, create_time, update_time, fk_province_id, version
+        from ry-cloud.t_dictionary_city
+        where pk_city_id = #{pkCityId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TDictionaryCityMap">
+        select
+          pk_city_id, city_name, turn_on, create_time, update_time, fk_province_id, version
+        from ry-cloud.t_dictionary_city
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TDictionaryCityMap">
+        select
+        pk_city_id, city_name, turn_on, create_time, update_time, fk_province_id, version
+        from ry-cloud.t_dictionary_city
+        <where>
+            <if test="pkCityId != null and pkCityId != ''">
+                and pk_city_id = #{pkCityId}
+            </if>
+            <if test="cityName != null and cityName != ''">
+                and city_name = #{cityName}
+            </if>
+            <if test="turnOn != null">
+                and turn_on = #{turnOn}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="fkProvinceId != null and fkProvinceId != ''">
+                and fk_province_id = #{fkProvinceId}
+            </if>
+            <if test="version != null">
+                and version = #{version}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="pkCityId" useGeneratedKeys="true">
+        insert into ry-cloud.t_dictionary_city(city_name, turn_on, create_time, update_time, fk_province_id, version)
+        values (#{cityName}, #{turnOn}, #{createTime}, #{updateTime}, #{fkProvinceId}, #{version})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="pkCityId" useGeneratedKeys="true">
+        insert into ry-cloud.t_dictionary_city(city_name, turn_on, create_time, update_time, fk_province_id, version)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.cityName}, #{entity.turnOn}, #{entity.createTime}, #{entity.updateTime}, #{entity.fkProvinceId},
+            #{entity.version})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="pkCityId" useGeneratedKeys="true">
+        insert into ry-cloud.t_dictionary_city(city_name, turn_on, create_time, update_time, fk_province_id, version)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.cityName}, #{entity.turnOn}, #{entity.createTime}, #{entity.updateTime}, #{entity.fkProvinceId},
+            #{entity.version})
+        </foreach>
+        on duplicate key update
+        city_name = values(city_name) , turn_on = values(turn_on) , create_time = values(create_time) , update_time =
+        values(update_time) , fk_province_id = values(fk_province_id) , version = values(version)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update ry-cloud.t_dictionary_city
+        <set>
+            <if test="cityName != null and cityName != ''">
+                city_name = #{cityName},
+            </if>
+            <if test="turnOn != null">
+                turn_on = #{turnOn},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="fkProvinceId != null and fkProvinceId != ''">
+                fk_province_id = #{fkProvinceId},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+        </set>
+        where pk_city_id = #{pkCityId}
+    </update>
+    <update id="updateByEntity">
+        update t_dictionary_city
+        <set>
+            <if test="cityName != null and cityName != ''">
+                city_name = #{cityName},
+            </if>
+            <if test="turnOn != null">
+                turn_on = #{turnOn},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="fkProvinceId != null and fkProvinceId != ''">
+                fk_province_id = #{fkProvinceId},
+            </if>
+            version = #{version} +1
+        </set>
+        where pk_city_id = #{pkCityId}
+        and version = #{version}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from ry-cloud.t_dictionary_city where pk_city_id = #{pkCityId}
+    </delete>
+
+</mapper>
+

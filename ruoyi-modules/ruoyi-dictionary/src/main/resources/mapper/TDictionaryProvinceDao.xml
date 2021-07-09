@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.dictionary.mapper.TDictionaryProvinceDao">
+
+    <resultMap type="com.ruoyi.dictionary.entity.TDictionaryProvince" id="TDictionaryProvinceMap">
+        <result property="pkProvinceId" column="pk_province_id" jdbcType="VARCHAR"/>
+        <result property="provinceName" column="province_name" jdbcType="VARCHAR"/>
+        <result property="turnOn" column="turn_on" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="abbreviation" column="abbreviation" jdbcType="VARCHAR"/>
+        <result property="provinceCapital" column="province_capital" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TDictionaryProvinceMap">
+        select
+          pk_province_id, province_name, turn_on, create_time, update_time, abbreviation, province_capital
+        from ry-cloud.t_dictionary_province
+        where pk_province_id = #{pkProvinceId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TDictionaryProvinceMap">
+        select
+          pk_province_id, province_name, turn_on, create_time, update_time, abbreviation, province_capital
+        from ry-cloud.t_dictionary_province
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TDictionaryProvinceMap">
+        select
+        pk_province_id, province_name, turn_on, create_time, update_time, abbreviation, province_capital
+        from ry-cloud.t_dictionary_province
+        <where>
+            <if test="pkProvinceId != null and pkProvinceId != ''">
+                and pk_province_id = #{pkProvinceId}
+            </if>
+            <if test="provinceName != null and provinceName != ''">
+                and province_name = #{provinceName}
+            </if>
+            <if test="turnOn != null">
+                and turn_on = #{turnOn}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="abbreviation != null and abbreviation != ''">
+                and abbreviation = #{abbreviation}
+            </if>
+            <if test="provinceCapital != null and provinceCapital != ''">
+                and province_capital = #{provinceCapital}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="pkProvinceId" useGeneratedKeys="true">
+        insert into ry-cloud.t_dictionary_province(province_name, turn_on, create_time, update_time, abbreviation, province_capital)
+        values (#{provinceName}, #{turnOn}, #{createTime}, #{updateTime}, #{abbreviation}, #{provinceCapital})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="pkProvinceId" useGeneratedKeys="true">
+        insert into ry-cloud.t_dictionary_province(province_name, turn_on, create_time, update_time, abbreviation,
+        province_capital)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.provinceName}, #{entity.turnOn}, #{entity.createTime}, #{entity.updateTime},
+            #{entity.abbreviation}, #{entity.provinceCapital})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="pkProvinceId" useGeneratedKeys="true">
+        insert into ry-cloud.t_dictionary_province(province_name, turn_on, create_time, update_time, abbreviation,
+        province_capital)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.provinceName}, #{entity.turnOn}, #{entity.createTime}, #{entity.updateTime},
+            #{entity.abbreviation}, #{entity.provinceCapital})
+        </foreach>
+        on duplicate key update
+        province_name = values(province_name) , turn_on = values(turn_on) , create_time = values(create_time) ,
+        update_time = values(update_time) , abbreviation = values(abbreviation) , province_capital =
+        values(province_capital)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update ry-cloud.t_dictionary_province
+        <set>
+            <if test="provinceName != null and provinceName != ''">
+                province_name = #{provinceName},
+            </if>
+            <if test="turnOn != null">
+                turn_on = #{turnOn},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="abbreviation != null and abbreviation != ''">
+                abbreviation = #{abbreviation},
+            </if>
+            <if test="provinceCapital != null and provinceCapital != ''">
+                province_capital = #{provinceCapital},
+            </if>
+        </set>
+        where pk_province_id = #{pkProvinceId}
+    </update>
+    <update id="updateByEntity">
+        update t_dictionary_province
+        <set>
+            <if test="provinceName != null and provinceName != ''">
+                province_name = #{provinceName},
+            </if>
+            <if test="turnOn != null">
+                turn_on = #{turnOn},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="abbreviation != null and abbreviation != ''">
+                abbreviation = #{abbreviation},
+            </if>
+            <if test="provinceCapital != null and provinceCapital != ''">
+                province_capital = #{provinceCapital},
+            </if>
+            version = #{version} +1
+        </set>
+        where pk_province_id = #{pkProvinceId}
+        and version = #{version}
+    </update>
+    <update id="upOrderById">
+        update t_dictionary_province set dic_sort = #{dicSort} where dic_sort = #{dicSort}+1;
+        update t_dictionary_province set dic_sort = #{dicSort}+1 where pk_province_id = #{pkProvinceId};
+    </update>
+    <update id="downOrderById">
+        update t_dictionary_province set dic_sort = #{dicSort} where dic_sort = #{dicSort}-1;
+        update t_dictionary_province set dic_sort = #{dicSort}-1 where pk_province_id = #{pkProvinceId};
+    </update>
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from ry-cloud.t_dictionary_province where pk_province_id = #{pkProvinceId}
+    </delete>
+
+</mapper>
+

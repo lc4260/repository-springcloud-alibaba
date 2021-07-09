@@ -82,7 +82,7 @@
               <li>SpringCloud</li>
               <li>Nacos</li>
               <li>Sentinel</li>
-              <li>Seata</li>
+              <li</li>
               <li>Minio</li>
               <li>...</li>
             </ul>

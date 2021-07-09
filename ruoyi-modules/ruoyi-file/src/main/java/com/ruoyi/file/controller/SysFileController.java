@@ -37,7 +37,7 @@ public class SysFileController
             SysFile sysFile = new SysFile();
             sysFile.setName(FileUtils.getName(url));
             sysFile.setUrl(url);
-            return R.ok(sysFile);
+            return R.ok(sysFile,"操作成功！");
         }
         catch (Exception e)
         {

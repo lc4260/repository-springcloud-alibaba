@@ -17,8 +17,8 @@ import com.ruoyi.common.core.domain.R;
 import reactor.core.publisher.Mono;
 
 /**
- * 网关统一异常处理
  *
+ *网关统一异常处理
  * @author ruoyi
  */
 @Order(-1)

@@ -94,6 +94,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/dictionary',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'type/data/:dictId(\\d+)',
+        component: (resolve) => require(['@/views/dictionary/province/index'], resolve),
+        name: 'Data',
+        meta: { title: '字典数据', icon: '' }
+      }
+    ]
+  },
+  {
     path: '/job',
     component: Layout,
     hidden: true,

@@ -23,17 +23,15 @@ public class R<T> implements Serializable
     private String msg;
 
     private T data;
-
     public static <T> R<T> ok()
     {
         return restResult(null, SUCCESS, null);
     }
 
-    public static <T> R<T> ok(T data)
+    public static <T> R<T> ok(String msg)
     {
-        return restResult(data, SUCCESS, null);
+        return restResult(null, SUCCESS, msg);
     }
-
     public static <T> R<T> ok(T data, String msg)
     {
         return restResult(data, SUCCESS, msg);
