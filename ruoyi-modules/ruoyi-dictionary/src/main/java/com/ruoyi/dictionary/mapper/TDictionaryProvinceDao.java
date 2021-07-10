@@ -6,7 +6,7 @@ import com.ruoyi.dictionary.entity.TDictionaryProvince;
 /**
  * (TDictionaryProvince)表数据库访问层
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 10:09:03
  */
 public interface TDictionaryProvinceDao extends BaseMapper<TDictionaryProvince> {

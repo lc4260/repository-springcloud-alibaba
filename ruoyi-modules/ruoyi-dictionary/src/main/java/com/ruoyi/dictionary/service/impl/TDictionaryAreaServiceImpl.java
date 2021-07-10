@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 /**
  * (TDictionaryArea)表服务实现类
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 14:29:33
  */
 @Service("tDictionaryAreaService")
@@ -23,6 +23,11 @@ public class TDictionaryAreaServiceImpl extends ServiceImpl<TDictionaryAreaDao, 
     @Resource
     private TDictionaryAreaDao areaDao;
 
+    /**
+     * 修改数据
+     * @param entity 要修改的实体的数据
+     * @return
+     */
     @Override
     public R updateByEntity(TDictionaryArea entity) {
         int i = areaDao.updateByEntity(entity);

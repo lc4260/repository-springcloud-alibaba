@@ -12,7 +12,7 @@ import lombok.Data;
 /**
  * (TDictionaryArea)表实体类
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 14:29:32
  */
 @SuppressWarnings("serial")

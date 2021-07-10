@@ -7,7 +7,7 @@ import com.ruoyi.dictionary.entity.TDictionaryCity;
 /**
  * (TDictionaryCity)表服务接口
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 13:46:26
  */
 public interface TDictionaryCityService extends IService<TDictionaryCity> {

@@ -13,9 +13,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * (TDictionaryArea)表控制层
+ * 数据字典行政区控制层
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 14:29:33
  */
 @RestController

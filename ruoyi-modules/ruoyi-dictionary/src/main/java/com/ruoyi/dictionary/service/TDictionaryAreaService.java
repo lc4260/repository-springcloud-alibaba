@@ -7,7 +7,7 @@ import com.ruoyi.dictionary.entity.TDictionaryArea;
 /**
  * (TDictionaryArea)表服务接口
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 14:29:33
  */
 public interface TDictionaryAreaService extends IService<TDictionaryArea> {

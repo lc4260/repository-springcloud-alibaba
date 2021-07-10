@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * (TDictionaryCity)表控制层
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 13:46:27
  */
 @RestController

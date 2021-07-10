@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * (TDictionaryProvince)表控制层
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 10:09:06
  */
 @RestController

@@ -7,7 +7,7 @@ import com.ruoyi.dictionary.entity.TDictionaryProvince;
 /**
  * (TDictionaryCity)表数据库访问层
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 13:46:25
  */
 public interface TDictionaryCityDao extends BaseMapper<TDictionaryCity> {

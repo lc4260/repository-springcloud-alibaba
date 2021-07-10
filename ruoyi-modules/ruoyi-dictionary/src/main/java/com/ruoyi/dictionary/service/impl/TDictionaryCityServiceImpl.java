@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 /**
  * (TDictionaryCity)表服务实现类
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 13:46:26
  */
 @Service("tDictionaryCityService")
@@ -21,6 +21,11 @@ public class TDictionaryCityServiceImpl extends ServiceImpl<TDictionaryCityDao, 
     @Resource
     private TDictionaryCityDao cityDao;
 
+    /**
+     * 修改数据
+     * @param entity 要修改的实体的数据
+     * @return
+     */
     @Override
     public R updateByEntity(TDictionaryCity entity) {
         int i = cityDao.updateByEntity(entity);

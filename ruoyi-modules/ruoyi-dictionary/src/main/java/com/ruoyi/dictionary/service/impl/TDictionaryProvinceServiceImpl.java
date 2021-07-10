@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.enums.OrderEnum;
 import com.ruoyi.common.core.enums.TurnOnEnum;
+import com.ruoyi.common.redis.service.RedisService;
 import com.ruoyi.dictionary.entity.TDictionaryArea;
 import com.ruoyi.dictionary.entity.TDictionaryCity;
 import com.ruoyi.dictionary.mapper.TDictionaryAreaDao;
@@ -13,6 +14,8 @@ import com.ruoyi.dictionary.mapper.TDictionaryCityDao;
 import com.ruoyi.dictionary.mapper.TDictionaryProvinceDao;
 import com.ruoyi.dictionary.entity.TDictionaryProvince;
 import com.ruoyi.dictionary.service.TDictionaryProvinceService;
+import com.ruoyi.dictionary.utils.RegionUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +26,7 @@ import java.util.List;
 /**
  * (TDictionaryProvince)表服务实现类
  *
- * @author makejava
+ * @author liuchun
  * @since 2021-06-30 10:09:05
  */
 @Service("tDictionaryProvinceService")
@@ -35,7 +38,10 @@ public class TDictionaryProvinceServiceImpl extends ServiceImpl<TDictionaryProvi
     private TDictionaryCityDao cityDao;
     @Resource
     private TDictionaryAreaDao areaDao;
-
+    @Autowired
+    private RedisService redisService;
+    @Autowired
+    private RegionUtil regionUtil;
     /**
      *
      * @param entity
@@ -55,6 +61,11 @@ public class TDictionaryProvinceServiceImpl extends ServiceImpl<TDictionaryProvi
         return R.ok("操作成功!");
     }
 
+    /**
+     * 修改数据
+     * @param entity 要修改的实体的数据
+     * @return
+     */
     @Override
     public R updateByEntity(TDictionaryProvince entity) {
         //先查版本号
@@ -62,33 +73,23 @@ public class TDictionaryProvinceServiceImpl extends ServiceImpl<TDictionaryProvi
         return R.ok(i > 0 ? "操作成功!":"请重试！");
     }
 
+    /**
+     * 获取行政区域树
+     * 该方法也可使用缓存预热，提升用户体验
+     * 如果行政区划有变化，就需要更新缓存或者删除key
+     * @return
+     */
     @Override
     public R treeSelect() {
-        //先查省份
-        TDictionaryProvince queryProvince = new TDictionaryProvince();
-        queryProvince.setTurnOn(TurnOnEnum.ON.value());
-        List<TDictionaryProvince> provinceList = this.provinceDao.selectList(new QueryWrapper<TDictionaryProvince>(queryProvince));
-        //再查所属城市
-        Iterator<TDictionaryProvince> provinceIterator = provinceList.iterator();
-        while (provinceIterator.hasNext()){
-            TDictionaryProvince next = provinceIterator.next();
-            TDictionaryCity queryCity = new TDictionaryCity();
-            queryCity.setFkProvinceId(next.getPkProvinceId());
-            queryCity.setTurnOn(TurnOnEnum.ON.value());
-            List<TDictionaryCity> cityList = cityDao.selectList(new QueryWrapper<TDictionaryCity>(queryCity));
-            //再查管辖区域
-            Iterator<TDictionaryCity> cityIterator = cityList.iterator();
-            while (cityIterator.hasNext()) {
-                TDictionaryCity nextCity = cityIterator.next();
-                TDictionaryArea queryArea = new TDictionaryArea();
-                queryArea.setFkCityId(nextCity.getPkCityId());
-                queryArea.setTurnOn(TurnOnEnum.ON.value());
-                List<TDictionaryArea> areaList = areaDao.selectList(new QueryWrapper<TDictionaryArea>(queryArea));
-                nextCity.setAreaList(areaList);
-            }
-            //
-            next.setCityList(cityList);
+        /**
+         * 先看redis中有没有
+         */
+        List<TDictionaryProvince> provinceList = redisService.getCacheList("dictionary:region:tree");
+        if(provinceList != null && provinceList.size() > 0){
+            return R.ok(provinceList,"获取成功！");
         }
+        //调用工具类，查询
+        provinceList = regionUtil.getRegionTree();
         return R.ok(provinceList,"获取成功！");
     }
 }
