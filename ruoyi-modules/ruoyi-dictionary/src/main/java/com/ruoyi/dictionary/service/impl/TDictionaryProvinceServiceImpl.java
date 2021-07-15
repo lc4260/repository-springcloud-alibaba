@@ -68,9 +68,19 @@ public class TDictionaryProvinceServiceImpl extends ServiceImpl<TDictionaryProvi
      */
     @Override
     public R updateByEntity(TDictionaryProvince entity) {
-        //先查版本号
+        //1乐观锁，版本号机制
         int i = provinceDao.updateByEntity(entity);
-        return R.ok(i > 0 ? "操作成功!":"请重试！");
+        return R.ok(i > 0 ? "操作成功!":"请刷新后重试！");
+
+//        //2排他锁，先查询数据是否有被修改，再进行下一步处理
+//        int version = provinceDao.selectById(entity.getPkProvinceId()).getVersion();
+//        if(entity.getVersion() == version){
+//            //未被修改
+//            int i = provinceDao.updateByEntity(entity);
+//            return R.ok("操作成功!");
+//        }else {
+//            return R.ok("该数据已被修改，请刷新后重试！");
+//        }
     }
 
     /**

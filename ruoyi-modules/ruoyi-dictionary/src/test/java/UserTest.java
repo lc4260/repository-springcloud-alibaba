@@ -12,6 +12,7 @@ public class UserTest implements Cloneable{
     private String password;
     private int age;
     private int sex;
+    public int a;
     UserTest(){
 
     }
